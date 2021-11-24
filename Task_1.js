@@ -1,9 +1,9 @@
 const bodyElement = document.querySelector('body')
 const videosList = []
 
-// Change "isRenderVideoElementsOnLoad" to false if you want to switch elements ON HOVER
+// Change "isRenderVideoElementsOnPageLoad" to false if you want to switch elements ON HOVER
 const radiusBetweenVideosInPixels = 200
-const isRenderVideoElementsOnLoad = true
+const isRenderVideoElementsOnPageLoad = true
 
 const populateVideoList = () => {
     const allImagesOnWebpage = document.querySelectorAll('img')
@@ -17,7 +17,7 @@ const populateVideoList = () => {
         if (isDistanceBetweenElementsValid(image)) videosList.push(image)
     })
 
-    if (isRenderVideoElementsOnLoad) {
+    if (isRenderVideoElementsOnPageLoad) {
         videosList.forEach(video => {
             switchImageWithVideo(video)
         })
