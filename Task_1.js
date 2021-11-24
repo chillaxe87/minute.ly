@@ -78,7 +78,6 @@ const createVideoElement = (width, height) => {
     video.muted = true
     video.width = width
     video.height = height
-    video.style.zIndex = '10'
     video.style.opacity = 0
     video.style.transition = "opacity 1s"
 
@@ -96,6 +95,7 @@ const createCircleAroundVideo = (video) => {
     div.style.borderRadius = '50%'
     div.style.position = 'absolute'
     div.style.pointerEvents = "none"
+    div.style.zIndex = '10'
     div.style.left = `${videoLocationOnPage.left - radiusBetweenVideos}px`
     div.style.top = `${videoLocationOnPage.top - radiusBetweenVideos - heightToWidthCompensation / 2 + window.pageYOffset}px`
     div.style.width = (parseInt(longestEdge) + radiusBetweenVideos * 2) + 'px'
