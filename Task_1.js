@@ -83,7 +83,7 @@ const createVideoElement = (width, height) => {
     video.style.transition = "opacity 1s"
 
     return video
-}
+}s
 const createCircleAroundVideo = (video) => {
     const longestEdge = video.width > video.height ? video.width : video.height
     const heightToWidthCompensation = (video.width - video.height) > 0 ? video.width - video.height : video.height - video.width
