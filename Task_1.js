@@ -1,18 +1,34 @@
-const allImagesOnWebpage = document.querySelectorAll('img')
 const bodyElement = document.querySelector('body')
-
-const imagesList = []
 const videosList = []
-const radiusBetweenVideos = 200
 
-const isRenderVideoElementsAutomatically = true
+// Change "isRenderVideoElementsOnLoad" to false if you want to switch elements ON HOVER
+const radiusBetweenVideosInPixels = 200
+const isRenderVideoElementsOnLoad = true
 
-allImagesOnWebpage.forEach(el => {
-    if (el.width > 120 && el.height > 80) imagesList.push(el)
-})
+const populateVideoList = () => {
+    const allImagesOnWebpage = document.querySelectorAll('img')
+    const imagesList = []
+
+    allImagesOnWebpage.forEach(image => {
+        if (image.width > 120 && image.height > 80) imagesList.push(image)
+    })
+
+    imagesList.forEach(image => {
+        if (isDistanceBetweenElementsValid(image)) videosList.push(image)
+    })
+
+    if (isRenderVideoElementsOnLoad) {
+        videosList.forEach(video => {
+            switchImageWithVideo(video)
+        })
+    } else {
+        videosList.forEach((video) => {
+            video.addEventListener('mouseover', () => switchImageWithVideo(video))
+        })
+    }
+}
 
 const isDistanceBetweenElementsValid = (imageEl) => {
-    if (videosList.length >= 5) return false
     if (videosList.length === 0) return true
     const imageElementLocation = imageEl.getBoundingClientRect();
     for (let i = 0; i < videosList.length; i++) {
@@ -37,44 +53,40 @@ const isDistanceBetweenElementsValid = (imageEl) => {
     return true;
 }
 const switchImageWithVideo = (image) => {
-    if (isDistanceBetweenElementsValid(image)) {
-        const imageParentEl = image.parentElement
-        image.style.transition = "all 2s"
-        image.style.position = 'absolute'
+    const imageParentEl = image.parentElement
+    image.style.transition = "opacity 1s"
+    image.style.position = 'absolute'
 
-        const video = document.createElement('video')
-        video.controls = true
-        video.autoplay = true
-        video.muted = true
-        video.width = image.width
-        video.height = image.height
-        if (!isRenderVideoElementsAutomatically) {
-            video.style.opacity = 0
-            video.style.transition = "all 2s"
-        }
+    const video = createVideoElement(image.width, image.height)
+    const source = document.createElement('source')
+    source.src = "https://apv-static.minute.ly/videos/v-50bc6db9-a73b-49b1-966838-aa07-4f3bbace5851-s29.92-37.16m.mp4"
 
+    video.appendChild(source)
+    image.style.opacity = 0
+    imageParentEl.appendChild(video)
 
-        const source = document.createElement('source')
-        source.src = "https://apv-static.minute.ly/videos/v-50bc6db9-a73b-49b1-966838-aa07-4f3bbace5851-s29.92-37.16m.mp4"
+    setTimeout(() => {
+        video.style.opacity = 1
+    }, 500)
 
-        video.appendChild(source)
-        image.style.opacity = 0
-        imageParentEl.appendChild(video)
-
-        videosList.push(video)
-        if (!isRenderVideoElementsAutomatically) {
-            setTimeout(() => {
-                video.style.opacity = 1
-            }, 800)
-        }
-        createCircleAroundVideo(video)
-    }
+    createCircleAroundVideo(video)
 }
+const createVideoElement = (width, height) => {
+    const video = document.createElement('video')
+    video.loop = true
+    video.autoplay = true
+    video.muted = true
+    video.width = width
+    video.height = height
+    video.style.zIndex = '10'
+    video.style.opacity = 0
+    video.style.transition = "opacity 1s"
 
+    return video
+}
 const createCircleAroundVideo = (video) => {
     const longestEdge = video.width > video.height ? video.width : video.height
     const heightToWidthCompensation = (video.width - video.height) > 0 ? video.width - video.height : video.height - video.width
-
     const videoLocationOnPage = video.getBoundingClientRect()
 
     const div = document.createElement('div')
@@ -91,14 +103,6 @@ const createCircleAroundVideo = (video) => {
     bodyElement.appendChild(div)
 }
 
-if (isRenderVideoElementsAutomatically) {
-    for (let i = 0; i < imagesList.length && videosList.length <= 5; i++) {
-        switchImageWithVideo(imagesList[i])
-    }
-} else {
-    imagesList.forEach((el) => {
-        if (videosList.length <= 5) {
-            el.addEventListener('mouseover', () => switchImageWithVideo(el))
-        }
-    })
-}
+populateVideoList()
+
+
