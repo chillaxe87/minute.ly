@@ -96,10 +96,10 @@ const createCircleAroundVideo = (video) => {
     div.style.position = 'absolute'
     div.style.pointerEvents = "none"
     div.style.zIndex = '10'
-    div.style.left = `${videoLocationOnPage.left - radiusBetweenVideos}px`
-    div.style.top = `${videoLocationOnPage.top - radiusBetweenVideos - heightToWidthCompensation / 2 + window.pageYOffset}px`
-    div.style.width = (parseInt(longestEdge) + radiusBetweenVideos * 2) + 'px'
-    div.style.height = (parseInt(longestEdge) + radiusBetweenVideos * 2) + 'px'
+    div.style.left = `${videoLocationOnPage.left - radiusBetweenVideosInPixels}px`
+    div.style.top = `${videoLocationOnPage.top - radiusBetweenVideosInPixels - heightToWidthCompensation / 2 + window.pageYOffset}px`
+    div.style.width = (parseInt(longestEdge) + radiusBetweenVideosInPixels * 2) + 'px'
+    div.style.height = (parseInt(longestEdge) + radiusBetweenVideosInPixels * 2) + 'px'
     bodyElement.appendChild(div)
 }
 
